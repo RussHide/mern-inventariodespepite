@@ -5,10 +5,11 @@ import dotenv from 'dotenv'
 import pool from './db.js'
 import ProductsRouter from './routes/ProductsRouter.js'
 
-const app = express()
 dotenv.config()
+const app = express()
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use('/insumos', ProductsRouter)
 

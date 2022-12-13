@@ -2,7 +2,7 @@ import Input from 'antd/es/input'
 import Select from 'antd/es/select'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 
-const optionsCategory = [
+export const optionsCategory = [
     { value: 'x', label: 'Limpiar filtro' },
     { value: 'INSECTICIDA', label: 'INSECTICIDA' },
     { value: 'ADHERENTE', label: 'ADHERENTE' },
@@ -14,7 +14,7 @@ const optionsCategory = [
 
 ]
 
-const optionsQuantity = [
+export const optionsQuantity = [
     { value: 'x', label: 'Limpiar filtro' },
     { value: '0-25', label: '0 - 25' },
     { value: '25-50', label: '25 - 50' },
@@ -25,7 +25,7 @@ const optionsQuantity = [
 
 ]
 
-const optionsUnit = [
+export const optionsUnit = [
     { value: 'x', label: 'Limpiar filtro' },
     { value: 'KG', label: 'KG' },
     { value: 'L', label: 'L' },

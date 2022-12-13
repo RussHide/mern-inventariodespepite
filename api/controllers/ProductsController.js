@@ -12,10 +12,13 @@ export const getAllProducts = async (req, res) => {
 
 export const addProduct = async (req, res) => {
     try {
-        const newProductData = [req.body.codigo, req.body.nombre, req.body.descripcion, req.body.cantidad, req.body.unidad]
-        await pool.execute('insert into productos (codigo, nombre, descripcion, cantidad, unidad) values (?,?,?,?,?)', newProductData)
+        console.log(req.body);
+        console.log(req.body.codigo, req.body.nombre, req.body.categoria, req.body.cantidad, req.body.unidad)
+        const newProductData = [req.body.codigo, req.body.nombre, req.body.categoria, req.body.cantidad, req.body.unidad]
+        await pool.execute('insert into productos (codigo, nombre, categoria, cantidad, unidad) values (?,?,?,?,?)', newProductData)
         res.status(200).json({ message: 'Product created' })
     } catch (error) {
+        console.log(error)
         res.status(404).json({ message: error.message })
     }
 }
