@@ -6,7 +6,8 @@ import toast from "react-hot-toast";
 import axios from 'axios';
 
 
-const Add = ({ modals, setModals }) => {
+
+const Add = ({ modals, setModals, fetchProducts }) => {
     const [newProductData, setNewProductData] = useState({
         codigo: '',
         nombre: '',
@@ -22,6 +23,8 @@ const Add = ({ modals, setModals }) => {
         try {
             await axios.post('http://localhost:3000/insumos', newProductData)
             /* await fetch('http://localhost:3000/insumos', { method: 'post', body: JSON.stringify({nombre: 'aa'}) }) */
+            fetchProducts()
+            setModals(prev => ({...prev, add: {isOpen: false}}))
             toast.success('Se guardo correctamente', { duration: 2000, position: 'top-right' })
         } catch (error) {
             console.log(error);
