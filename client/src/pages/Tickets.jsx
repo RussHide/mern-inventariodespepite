@@ -31,12 +31,46 @@ const Tickets = () => {
     unidad: ''
   })
 
+  const editDeleteButton = (arr) => {
+    return arr.reduce((acc, val) => {
+      const ind = acc.findIndex(item => item.folio === val.folio)
+      if (ind !== -1) {
+        acc.push({
+          options: false,
+          folio: val.folio,
+          tipoVale: val.tipoVale,
+          descripcion: val.descripcion,
+          observacion: val.observacion,
+          entrego: val.entrego,
+          recibio: val.recibio,
+          codigoInsumo: val.codigoInsumo,
+          cantidad: val.cantidad
+        });
+
+      } else {
+        acc.push({
+          options: true,
+          folio: val.folio,
+          tipoVale: val.tipoVale,
+          descripcion: val.descripcion,
+          observacion: val.observacion,
+          entrego: val.entrego,
+          recibio: val.recibio,
+          codigoInsumo: val.codigoInsumo,
+          cantidad: val.cantidad
+        });
+      };
+      return acc
+    }, [])
+  }
+
   const fetchTickets = async () => {
     try {
       const response = await fetch('http://localhost:3000/vales')
       const data = await response.json()
-      setAllTickets(data)
-      setFilteredTickets(data)
+      console.log(data);
+      setAllTickets(editDeleteButton(data))
+      setFilteredTickets(editDeleteButton(data))
       setLoading(false)
     } catch (error) {
       console.log(error)
@@ -115,7 +149,8 @@ const Tickets = () => {
                       <TableRow texto='20-02-2002' />
                       <TableRow texto={ticket.codigoInsumo} />
                       <TableRow texto={ticket.cantidad} />
-                      <td className="py-3 px-6 text-center">
+                      {
+                        ticket.options ? (<td className="py-3 px-6 text-center">
                         <div className="flex item-center justify-center">
                           <div
                             className="w-4 mr-2 transform hover:text-blue-500 cursor-pointer hover:scale-110">
@@ -126,7 +161,9 @@ const Tickets = () => {
                             <TrashIcon onClick={() => setModals(prev => ({ ...prev, delete: {isOpen: true, id: product.idProducto} }))} />
                           </div>
                         </div>
-                      </td>
+                      </td>) : null
+                      }
+                      
                     </tr>
                   ))
                 }
@@ -141,3 +178,24 @@ const Tickets = () => {
 }
 
 export default Tickets
+
+/* const mergeArray = (arr) => {
+  return arr.reduce((acc, val) => {
+    const ind = acc.findIndex(item => item.folio === val.folio)
+    if (ind !== -1) {
+      acc[ind].insumos.push({insumo: val.codigoInsumo, cantidad: val.cantidad})
+
+    } else {
+      acc.push({
+        folio: val.folio,
+        tipoVale: val.tipoVale,
+        descripcion: val.descripcion,
+        observacion: val.observacion,
+        entrego: val.entrego,
+        recibio: val.recibio,
+        insumos: [{insumo: val.codigoInsumo, cantidad: val.cantidad}]
+      });
+    };
+    return acc
+  }, [])
+} */

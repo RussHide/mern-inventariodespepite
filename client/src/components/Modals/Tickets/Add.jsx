@@ -39,7 +39,8 @@ const Add = ({ modals, setModals, fetchTickets }) => {
       return
     }
     try {
-      await axios.post('http://localhost:3000/vales', [newTicketData, productsStack])
+      const { data } = await axios.post('http://localhost:3000/vales', [newTicketData, productsStack])
+      console.log(data)
       /* await fetch('http://localhost:3000/insumos', { method: 'post', body: JSON.stringify({nombre: 'aa'}) }) */
       fetchTickets()
       setModals(prev => ({ ...prev, add: { isOpen: false } }))
