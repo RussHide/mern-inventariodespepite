@@ -17,8 +17,8 @@ export const addTicket = async (req, res) => {
 
         const { folio, tipoVale, descripcion, observacion, entrego, recibio, fecha } = req.body[0]
         for (let index = 0; index < req.body[1].length; index++) {
-            await poolCon.execute('insert into vales (folio, tipoVale, descripcion, observacion, entrego, recibio, fecha, codigoInsumo, cantidad) values (?,?,?,?,?,?,?,?,?)',
-                [folio, tipoVale, descripcion, observacion, entrego, recibio, fecha, req.body[1][index].insumo, req.body[1][index].cantidad])
+            await poolCon.execute('insert into vales (folio, tipoVale, descripcion, observacion, entrego, recibio, fecha, idProducto, codigoInsumo, cantidad) values (?,?,?,?,?,?,?,?,?,?)',
+                [folio, tipoVale, descripcion, observacion, entrego, recibio, fecha, req.body[1][index].idInsumo,req.body[1][index].insumo, req.body[1][index].cantidad])
             if (tipoVale === 'Entrada') {
                 await poolCon.execute(`update productos set cantidad = cantidad + ${req.body[1][index].cantidad} where nombre = '${req.body[1][index].insumo}'`)
             } else {
@@ -45,10 +45,12 @@ export const editTicket = async (req, res) => {
 export const deleteTicket = async (req, res) => {
     const { idDelete } = req.params
     try {
-        const ticket = await pool.query('select * from vales where idVale =' + idDelete)
-        const x = await pool.query('delete from vales where idProducto =' + idDelete)
-        res.status(200).json(x)
+        await pool.query('delete from vales where folio = ? and idProducto = ? and codigoInsumo = ?', [idDelete.split('-')[1], idDelete.split('-')[0], idDelete.split('-')[2]])
+        /* const ticket = await pool.query('select * from vales where idVale =' + idDelete)
+        const x = await pool.query('delete from vales where idProducto =' + idDelete) */
+        res.status(200).json()
     } catch (error) {
+        console.log(error)
         res.status(404).json({ message: error.message })
     }
 }

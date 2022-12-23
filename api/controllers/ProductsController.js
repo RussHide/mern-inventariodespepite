@@ -11,7 +11,7 @@ export const getAllProducts = async (req, res) => {
 }
 export const getAllProductsNames = async (req, res) => {
     try {
-        const response = await pool.execute('select nombre from productos')
+        const response = await pool.execute('select idProducto, nombre from productos')
         /* const orderByQuantity = response[0].sort((a, b) => a.cantidad - b.cantidad ) */
         res.status(200).json(response[0])
     } catch (error) {

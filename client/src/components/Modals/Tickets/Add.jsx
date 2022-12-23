@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 const Add = ({ modals, setModals, fetchTickets }) => {
   const [nameProductsStack, setNameProductsStack] = useState([])
   const [productsStack, setProductsStack] = useState([{
+    idInsumo: '',
     insumo: '',
     cantidad: ''
   }])
@@ -27,7 +28,7 @@ const Add = ({ modals, setModals, fetchTickets }) => {
   useEffect(() => {
     const fetchProductsName = async () => {
       const { data } = await axios.get('http://localhost:3000/insumos/nombres')
-      const formatData = await data.map(item => ({ value: item.nombre, label: item.nombre }))
+      const formatData = await data.map(item => ({ value: `${item.idProducto}-${item.nombre}`, label: item.nombre }))
       setNameProductsStack(formatData)
     }
     fetchProductsName()
@@ -40,7 +41,6 @@ const Add = ({ modals, setModals, fetchTickets }) => {
     }
     try {
       const { data } = await axios.post('http://localhost:3000/vales', [newTicketData, productsStack])
-      console.log(data)
       /* await fetch('http://localhost:3000/insumos', { method: 'post', body: JSON.stringify({nombre: 'aa'}) }) */
       fetchTickets()
       setModals(prev => ({ ...prev, add: { isOpen: false } }))
@@ -54,7 +54,8 @@ const Add = ({ modals, setModals, fetchTickets }) => {
   const changeAddDelete = (e, index, op) => {
     let newArr = [...productsStack]
     if (op === 'in') {
-      newArr[index].insumo = e
+      newArr[index].idInsumo = e.split('-')[0]
+      newArr[index].insumo = e.split('-')[1]
     } else {
       newArr[index].cantidad = e
     }

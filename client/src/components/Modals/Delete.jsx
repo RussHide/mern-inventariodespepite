@@ -2,15 +2,25 @@ import Modal from 'antd/es/modal'
 import toast from "react-hot-toast";
 import axios from 'axios';
 
-const Delete = ({ modals, setModals, fetchProducts, texto }) => {
+const Delete = ({ modals, setModals, fetchData, texto }) => {
+
 
   const btnDelete = async () => {
+    console.log(modals.delete);
     try {
-      await axios.delete('http://localhost:3000/insumos/' + modals.delete.id)
-      fetchProducts()
-      setModals(prev => ({ ...prev, delete: { isOpen: false, id: '' } }))
-      toast.success(texto, { position: 'top-right', duration: 2500 })
+      if (Object.values(modals.delete.data).length === 0) {
+        await axios.delete(modals.delete.url + modals.delete.id)
+        /* fetchProducts()
+        setModals(prev => ({ ...prev, delete: { isOpen: false, id: '' } })) */
+        toast.success(texto, { position: 'top-right', duration: 2500 })
+      } else {
+        await axios.delete(modals.delete.url + modals.delete.data)
+       /*  fetchProducts()
+        setModals(prev => ({ ...prev, delete: { isOpen: false, id: '' } })) */
+        toast.success(texto, { position: 'top-right', duration: 2500 })
+      }
     } catch (error) {
+      console.log(error)
       toast.error('Hubo un error interno, consulta con un administrador', { position: 'top-right', duration: 2500 })
     }
   }
